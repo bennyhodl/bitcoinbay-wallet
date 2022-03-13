@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
 import {
   Link,
@@ -20,11 +10,16 @@ import {
   NativeBaseProvider,
   VStack,
   Code,
+  Button,
 } from 'native-base';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {theme} from './util/config';
 
+import {Home, Receive, Send} from './screens';
+
 // Color Switch Component
-function ToggleDarkMode() {
+const ToggleDarkMode = () => {
   const {colorMode, toggleColorMode} = useColorMode();
   return (
     <HStack space={2} alignItems="center">
@@ -39,31 +34,49 @@ function ToggleDarkMode() {
       <Text>Light</Text>
     </HStack>
   );
-}
+};
+
+const BitcoinBay = createNativeStackNavigator();
+
+export const BitcoinBayNavigation = () => {
+  return (
+    <BitcoinBay.Navigator initialRouteName="Home">
+      <BitcoinBay.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <BitcoinBay.Screen
+        name="Receive"
+        component={Receive}
+        options={{
+          headerStyle: {
+            backgroundColor: '#fff6f2',
+          },
+        }}
+      />
+      <BitcoinBay.Screen
+        name="Send"
+        component={Send}
+        options={{
+          headerStyle: {
+            backgroundColor: '#fff6f2',
+          },
+        }}
+      />
+    </BitcoinBay.Navigator>
+  );
+};
+
 const App = () => {
   return (
-    <NativeBaseProvider theme={theme}>
-      <Center
-        _dark={{bg: 'primary.dark'}}
-        _light={{bg: 'primary.light'}}
-        px={4}
-        flex={1}>
-        <VStack space={5} alignItems="center">
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Code>App.tsx</Code>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={'xl'}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
-    </NativeBaseProvider>
+    <NavigationContainer>
+      <NativeBaseProvider theme={theme}>
+        <BitcoinBayNavigation />
+      </NativeBaseProvider>
+    </NavigationContainer>
   );
 };
 export default App;
