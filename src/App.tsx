@@ -21,11 +21,11 @@ import {
   VStack,
   Code,
 } from 'native-base';
-import NativeBaseIcon from './src/components/NativeBaseIcon';
+import {theme} from './util/config';
 
 // Color Switch Component
 function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const {colorMode, toggleColorMode} = useColorMode();
   return (
     <HStack space={2} alignItems="center">
       <Text>Dark</Text>
@@ -42,14 +42,13 @@ function ToggleDarkMode() {
 }
 const App = () => {
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={theme}>
       <Center
-        _dark={{ bg: 'blueGray.900' }}
-        _light={{ bg: 'blueGray.50' }}
+        _dark={{bg: 'primary.dark'}}
+        _light={{bg: 'primary.light'}}
         px={4}
         flex={1}>
         <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
           <Heading size="lg">Welcome to NativeBase</Heading>
           <HStack space={2} alignItems="center">
             <Text>Edit</Text>
