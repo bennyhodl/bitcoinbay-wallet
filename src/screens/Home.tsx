@@ -1,9 +1,11 @@
 import React from 'react';
-import {Text, Box, Center, VStack, HStack} from 'native-base';
+import {Text, Box, HStack} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import WalletFooter from '../components/WalletFooter';
+import MapView, {Marker} from 'react-native-maps';
+import {Dimensions} from 'react-native';
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
@@ -16,9 +18,25 @@ const Home = () => {
       height="100%"
       flex={1}
       flexDirection="column"
-      justifyContent="space-between"
-      safeAreaTop>
-      <Text>Bitcoin Bay</Text>
+      justifyContent="space-between">
+      <MapView
+        style={{width: '100%', height: Dimensions.get('window').height - 100}}
+        region={{
+          latitude: 27.964157,
+          longitude: -82.452606,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}>
+        <Marker
+          title="Blind Tiger"
+          description="Accepts Bitcoin!"
+          coordinate={{
+            latitude: 27.93442,
+            longitude: -82.48281,
+          }}
+          pinColor="#ff581a"
+        />
+      </MapView>
       <HStack>
         <WalletFooter navigation={navigation} />
       </HStack>
