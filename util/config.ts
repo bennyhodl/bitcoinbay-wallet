@@ -30,3 +30,6 @@ export const theme = extendTheme({
     },
   },
 });
+
+export const lnbitsUrl = "http://192.168.1.169:8000/usermanager/api/v1/users"
+export const lnbitsInvoiceKey = "8fd0c9aa0411409ea9c2883bd61c86ee"
