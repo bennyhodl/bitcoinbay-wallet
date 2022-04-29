@@ -19,7 +19,7 @@ type InvoiceProps = {
   route: RouteProp<BitcoinBayParamList, 'CreateInvoice'>;
 };
 
-interface InvoiceDialogProps {
+type InvoiceDialogProps = {
   invoice: string;
 }
 
@@ -53,6 +53,8 @@ const invoiceString: string =
 const CreateInvoice = (props: InvoiceProps) => {
   const navigation = useNavigation<InvoiceScreenProp>();
   const [invoice, setInvoice] = useState<string>(invoiceString);
+  const amount = props.route.params.amount
+  const description = props.route.params.description
 
   const onShare = async () => {
     try {
@@ -69,7 +71,9 @@ const CreateInvoice = (props: InvoiceProps) => {
       _light={{bg: 'primary.light'}}
       px={4}
       flex={1}>
-      <VStack space={5} mt={20} alignItems="center">
+      <VStack space={5} mt={5} alignItems="center">
+        <Text color="#555555" p={0} m={0}>{amount} sats</Text>
+        <Text color="#555555" p={0} m={0}>{description}</Text>
         <QRCode value={invoice} logoSize={50} size={350} />
         <InvoiceDialog invoice={invoice} />
         <Button borderRadius="3xl" w={100} py={2} onPress={() => onShare()}>
