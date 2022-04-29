@@ -6,6 +6,7 @@ import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import WalletFooter from '../components/WalletFooter';
 import MapView, {Marker} from 'react-native-maps';
 import {Dimensions} from 'react-native';
+import {stores} from "../util/stores"
 import axios from "axios"
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
@@ -29,24 +30,20 @@ const Home = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        <Marker
-          title="Blind Tiger"
-          description="Accepts Bitcoin!"
-          coordinate={{
-            latitude: 27.93442,
-            longitude: -82.48281,
-          }}
-          pinColor="#ff581a"
-        />
-        <Marker
-          title="Bungalow Beach"
-          description="Accepts Bitcoin!"
-          coordinate={{
-            latitude: 27.476550,
-            longitude: -82.702700,
-          }}
-          pinColor="#ff581a"
-        />
+        {stores.map(store => {
+          return(
+            <Marker
+            key={store.id}
+            title={store.title}
+            description={store.description}
+            coordinate={{
+              latitude: store.latitude,
+              longitude: store.longitude
+            }}
+            pinColor="#ff581a"
+            />
+          )
+        })}
       </MapView>
       <HStack>
         <WalletFooter navigation={navigation} />
