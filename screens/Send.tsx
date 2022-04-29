@@ -23,13 +23,12 @@ const Send = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [paid, setPaid] = useState<PaymentStatus>({paid: false, status: false})
 
-  const sendPayment = (invoice: string) => {
+  const sendPayment = async (invoice: string) => {
     setLoading(true)
-    setTimeout(() => {
-      const status = payBolt11()
-      setLoading(false)
-      setPaid({paid: true, status: status})
-    }, 5000)
+    const status = await payBolt11(invoice)
+    setLoading(false)
+    setPaid({paid: true, status: status.data})
+
   }
 
   if (loading) {
@@ -80,7 +79,7 @@ const Send = () => {
             w="70%"
             mt={5}
             rounded="full"
-            onPress={() => sendPayment(invoice)}>
+            onPress={() => sendPayment("lnbc50n1p3xcdhrpp5t4fdtws9qf5sexncdhfpj20t30ush2l5k8zvsa2tvd9hjdk2m5qqdqqcqzzgxqyz5vqrzjqw8c7yfutqqy3kz8662fxutjvef7q2ujsxtt45csu0k688lkzu3ldmlstpw3vgjduyqqqqryqqqqthqqpysp5wqg658wu20hk2e4ahyg590h7ld9v0gjgvsgxr7l7spz5pvsxw0ps9qypqsqsadclhw30asasf8fdqc270hg6fwrssmm2n7dr4hyspq2pkegdx583n8mvjn56ymtt60s0kj8dayyxg46hn60ywlp8rczvg68gqxl8zgpj3xlms")}>
             Pay
           </Button>
         </VStack>
