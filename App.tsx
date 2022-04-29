@@ -73,6 +73,7 @@ export const BitcoinBayNavigation = () => {
             backgroundColor: '#fff6f2',
           },
           headerBackTitleVisible: false,
+          headerShown: false
         }}
       />
       <BitcoinBay.Screen
