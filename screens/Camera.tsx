@@ -15,16 +15,10 @@ const CameraScreen = () => {
   const [permissions, setPermissions] = useState(false)
 
   useEffect(() => {
-    // (async () => {
-    //   const cameraStatus = await Camera.requestCameraPermissionsAsync()
-    //   console.log(cameraStatus)
-    //   setPermissions(cameraStatus.granted)
-    // })
     permisionFunction()
   }, [])
 
   const permisionFunction = async () => {
-    // here is how you can get the camera permission
     const cameraPermission = await Camera.requestPermissionsAsync();
 
     setPermissions(cameraPermission.status === 'granted');
