@@ -8,7 +8,6 @@ interface Invoice {
     Receive: undefined;
     Send: undefined;
     Camera: undefined;
-    Invoice: Invoice;
-    PayInvoice: undefined;
+    CreateInvoice: Invoice;
   };
   
