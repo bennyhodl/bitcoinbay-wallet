@@ -20,11 +20,13 @@ const Receive = () => {
       px={4}
       flex={1}>
       <VStack space={5} mt={10} alignItems="center">
-        <HStack alignItems="center">
+        <HStack alignItems="center" mr={75}>
           <Input
             variant="unstyled"
+            textAlign="right"
             autoFocus={true}
             size="2xl"
+            width="100px"
             placeholder="0"
             keyboardType="numeric"
             keyboardAppearance="dark"
@@ -50,7 +52,7 @@ const Receive = () => {
           mt={5}
           rounded="full"
           onPress={() =>
-            navigation.navigate('Invoice', {
+            navigation.navigate('CreateInvoice', {
               amount: Number(amount),
               description: description,
             })

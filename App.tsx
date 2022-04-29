@@ -12,7 +12,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {theme} from './util/config';
 
-import {Home, Receive, Send, Camera, Invoice, PayInvoice} from './screens';
+import {Home, Receive, Send, Camera, CreateInvoice, PayInvoice} from './screens';
 
 // Color Switch Component
 const ToggleDarkMode = () => {
@@ -78,7 +78,7 @@ export const BitcoinBayNavigation = () => {
       />
       <BitcoinBay.Screen
         name="Invoice"
-        component={Invoice}
+        component={CreateInvoice}
         options={{
           headerStyle: {
             backgroundColor: '#fff6f2',

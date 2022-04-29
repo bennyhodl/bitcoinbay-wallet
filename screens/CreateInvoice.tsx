@@ -12,11 +12,11 @@ import {faClipboard} from '@fortawesome/free-solid-svg-icons';
 
 type InvoiceScreenProp = NativeStackNavigationProp<
   BitcoinBayParamList,
-  'Invoice'
+  'CreateInvoice'
 >;
 
 type InvoiceProps = {
-  route: RouteProp<BitcoinBayParamList, 'Invoice'>;
+  route: RouteProp<BitcoinBayParamList, 'CreateInvoice'>;
 };
 
 interface InvoiceDialogProps {
@@ -50,7 +50,7 @@ const InvoiceDialog = (props: InvoiceDialogProps) => {
 const invoiceString: string =
   'lnbcrt10u1p3r0hztpp5gwdf0w2m9fpqfgr63mpypfdumhn3r34nlnwez7jaagmuhw08wfrqdqjgf5hgcm0d9hzqsnp0ycqzpgxqyz5vqsp50xapzkrhfgrds09v8q0pkqn7cyw9ae9pv9dc2qhtwzlks3lttnfq9qyyssqefgecv0g3wpspmelqf2lvpcnykdugzjxp0mxf0dp4czkc7hslwf5lege7r3esy3x95cm0jgx2ezxkfzrues0p593c3d0krtmu2j78gqp8c6s5c';
 
-const Invoice = (props: InvoiceProps) => {
+const CreateInvoice = (props: InvoiceProps) => {
   const navigation = useNavigation<InvoiceScreenProp>();
   const [invoice, setInvoice] = useState<string>(invoiceString);
 
@@ -80,4 +80,4 @@ const Invoice = (props: InvoiceProps) => {
   );
 };
 
-export default Invoice;
+export default CreateInvoice;
