@@ -17,12 +17,12 @@ export const payBolt11 = async (bolt11:string) => {
         "Content-type": "application/json"
     }
 
-    const pay = await axios.post(`${lnbitsUrl}/payments`, {headers: header, data: body})
+    const pay = await axios.post(`${lnbitsUrl}/payments`, body, {headers: header})
     return pay
 }
 
-export const getUserTransactions = async () => {
-    const tx = await axios.get(`${lnbitsUrl}/wallets${userWalletId}`)
+export const getUserTransactions = async (id:string) => {
+    const tx = await axios.get(`${lnbitsUserUrl}/wallets${id}`)
     return tx
 }
 
@@ -37,14 +37,15 @@ export const createInvoice = async (data:CreateInvoice) => {
         "X-Api-Key": userInvoiceKey,
         "Content-type": "application/json"
     }
-
-    const createdInvoice = await axios.post(`${lnbitsUrl}/payments`, {headers: header, data: body})
+    
+    const createdInvoice = await axios.post(`${lnbitsUrl}/payments`, body ,{headers: header})
+    console.log("Res", createdInvoice.data)
     return createdInvoice
 }
 
 export const decodeInvoice = async (invoice:string) => {
     const body = {
-        invoice: invoice
+        data: invoice
     }
 
     const header = {
@@ -52,8 +53,8 @@ export const decodeInvoice = async (invoice:string) => {
         "Content-type": "application/json"
     }
 
-    const decodedInvoice = await axios.post(`${lnbitsUrl}/decode`, {headers: header, data: body})
-    return decodeInvoice
+    const decodedInvoice = await axios.post(`${lnbitsUrl}/payments/decode`, body, {headers: header})
+    return decodedInvoice
 }
 
 export const trackInvoice = async (hash:string) => {
