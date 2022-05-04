@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "bay-wallet",
-    "slug": "bay-wallet",
+    "name": "Bay Wallet",
+    "slug": "baywallet",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.jpg",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/bitcoin.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "io.bitcoinbay.baywallet"
     },
     "android": {
       "adaptiveIcon": {
