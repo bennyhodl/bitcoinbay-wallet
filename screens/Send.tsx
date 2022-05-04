@@ -44,9 +44,6 @@ const Send = () => {
       _light={{bg: 'primary.light'}}
       px={4}
       flex={1}>
-      {/* {loading ? 
-        <Text>Loading...</Text>
-        : */}
         <VStack space={5} mt={10} alignItems="center">
           <HStack alignItems="center">
             <Text
@@ -79,7 +76,7 @@ const Send = () => {
             w="70%"
             mt={5}
             rounded="full"
-            onPress={() => sendPayment("lnbc50n1p3xcdhrpp5t4fdtws9qf5sexncdhfpj20t30ush2l5k8zvsa2tvd9hjdk2m5qqdqqcqzzgxqyz5vqrzjqw8c7yfutqqy3kz8662fxutjvef7q2ujsxtt45csu0k688lkzu3ldmlstpw3vgjduyqqqqryqqqqthqqpysp5wqg658wu20hk2e4ahyg590h7ld9v0gjgvsgxr7l7spz5pvsxw0ps9qypqsqsadclhw30asasf8fdqc270hg6fwrssmm2n7dr4hyspq2pkegdx583n8mvjn56ymtt60s0kj8dayyxg46hn60ywlp8rczvg68gqxl8zgpj3xlms")}>
+            onPress={() => sendPayment(invoice)}>
             Pay
           </Button>
         </VStack>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Share} from 'react-native';
 import {Text, Box, VStack, HStack, Pressable, Button} from 'native-base';
 import Clipboard from '@react-native-community/clipboard';
@@ -8,6 +8,8 @@ import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import QRCode from 'react-native-qrcode-svg';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faClipboard} from '@fortawesome/free-solid-svg-icons';
+import {createInvoice} from "../lnbits/wallet"
+import Loading from "../components/Loading"
 // import Logo from '../assets/logo.jpg';
 
 type InvoiceScreenProp = NativeStackNavigationProp<
@@ -47,14 +49,25 @@ const InvoiceDialog = (props: InvoiceDialogProps) => {
   );
 };
 
-const invoiceString: string =
-  'lnbcrt10u1p3r0hztpp5gwdf0w2m9fpqfgr63mpypfdumhn3r34nlnwez7jaagmuhw08wfrqdqjgf5hgcm0d9hzqsnp0ycqzpgxqyz5vqsp50xapzkrhfgrds09v8q0pkqn7cyw9ae9pv9dc2qhtwzlks3lttnfq9qyyssqefgecv0g3wpspmelqf2lvpcnykdugzjxp0mxf0dp4czkc7hslwf5lege7r3esy3x95cm0jgx2ezxkfzrues0p593c3d0krtmu2j78gqp8c6s5c';
-
 const CreateInvoice = (props: InvoiceProps) => {
   const navigation = useNavigation<InvoiceScreenProp>();
-  const [invoice, setInvoice] = useState<string>(invoiceString);
-  const amount = props.route.params.amount
-  const description = props.route.params.description
+  const [invoice, setInvoice] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false)
+  const invoiceData = {
+    amount: props.route.params.amount,
+    memo: props.route.params.description
+  }
+  
+  const requestInvoice = async () => {
+    setLoading(true)
+    const lnbitsInvoice = await createInvoice(invoiceData)
+    setLoading(false)
+    console.log("Invoice", lnbitsInvoice.data)
+    setInvoice(lnbitsInvoice.data.payment_request)
+  }
+  useEffect(() => {
+    requestInvoice()
+  }, [])
 
   const onShare = async () => {
     try {
@@ -65,6 +78,11 @@ const CreateInvoice = (props: InvoiceProps) => {
       console.log('Error', error);
     }
   };
+
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <Box
       _dark={{bg: 'primary.dark'}}
@@ -72,8 +90,8 @@ const CreateInvoice = (props: InvoiceProps) => {
       px={4}
       flex={1}>
       <VStack space={5} mt={5} alignItems="center">
-        <Text color="#555555" p={0} m={0}>{amount} sats</Text>
-        <Text color="#555555" p={0} m={0}>{description}</Text>
+        <Text color="#555555" p={0} m={0}>{props.route.params.amount} sats</Text>
+        <Text color="#555555" p={0} m={0}>For: {props.route.params.description}</Text>
         <QRCode value={invoice} logoSize={50} size={350} />
         <InvoiceDialog invoice={invoice} />
         <Button borderRadius="3xl" w={100} py={2} onPress={() => onShare()}>
