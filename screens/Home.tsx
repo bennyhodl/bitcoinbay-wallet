@@ -7,6 +7,7 @@ import WalletFooter from '../components/WalletFooter';
 import MapView, {Marker} from 'react-native-maps';
 import {Dimensions} from 'react-native';
 import {stores} from "../util/stores"
+import DrawerButton from '../components/DrawerButton';
 import axios from "axios"
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
@@ -19,9 +20,10 @@ const Home = () => {
       _dark={{bg: 'primary.dark'}}
       _light={{bg: 'primary.light'}}
       height="100%"
-      flex={1}
+      flex={1}   
       flexDirection="column"
       justifyContent="space-between">
+      <DrawerButton />
       <MapView
         style={{width: '100%', height: Dimensions.get('window').height - 100}}
         region={{

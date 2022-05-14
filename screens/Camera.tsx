@@ -44,7 +44,7 @@ const CameraScreen = () => {
       flex={1}>
           <Camera
             style={{flex: 1,width:"100%", height:"100%", margin: 0}}
-            type="front"
+            type={Camera.Constants.Type.back}
           />
           {/* <Svg viewBox="0 0 100 100" width={50} style={{position: "absolute"}}>
             <Path d="M25,2 L2,2 L2,25" fill="none" stroke="#000000" stroke-width="3" />

@@ -8,11 +8,8 @@ import {
   NativeBaseProvider,
 } from 'native-base';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import {theme} from './util/config';
-
-import {Home, Receive, Send, Camera, CreateInvoice} from './screens';
+import DrawerNavigation from "./screens/DrawerNavigation"
 
 // Color Switch Component
 const ToggleDarkMode = () => {
@@ -32,78 +29,11 @@ const ToggleDarkMode = () => {
   );
 };
 
-const BitcoinBay = createNativeStackNavigator();
-const BitcoinBayDrawer = createDrawerNavigator();
-
-export const BitcoinBayNavigation = () => {
-  return (
-    <BitcoinBay.Navigator initialRouteName="Home">
-      <BitcoinBay.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <BitcoinBay.Screen
-        name="Receive"
-        component={Receive}
-        options={{
-          headerStyle: {
-            backgroundColor: '#fff6f2',
-          },
-          headerBackTitleVisible: false,
-        }}
-      />
-      <BitcoinBay.Screen
-        name="Send"
-        component={Send}
-        options={{
-          headerStyle: {
-            backgroundColor: '#fff6f2',
-          },
-          headerBackTitleVisible: false,
-        }}
-      />
-      <BitcoinBay.Screen
-        name="Camera"
-        component={Camera}
-        options={{
-          headerStyle: {
-            backgroundColor: '#fff6f2',
-          },
-          headerBackTitleVisible: false,
-          headerShown: false
-        }}
-      />
-      <BitcoinBay.Screen
-        name="CreateInvoice"
-        component={CreateInvoice}
-        options={{
-          headerStyle: {
-            backgroundColor: '#fff6f2',
-          },
-          headerBackTitleVisible: false,
-        }}
-      />
-    </BitcoinBay.Navigator>
-  );
-};
-
-export const BitcoinBayDrawerNavigation = () => {
-  return (
-    <BitcoinBayDrawer.Navigator>
-      <BitcoinBayDrawer.Screen name="Home" component={Home} />
-    </BitcoinBayDrawer.Navigator>
-  );
-};
-
 const App = () => {
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
-        <BitcoinBayDrawerNavigation />
-        <BitcoinBayNavigation />
+        <DrawerNavigation />
       </NativeBaseProvider>
     </NavigationContainer>
   );
