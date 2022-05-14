@@ -33,7 +33,7 @@ const ToggleDarkMode = () => {
 };
 
 const BitcoinBay = createNativeStackNavigator();
-// const BitcoinBayDrawer = createDrawerNavigator();
+const BitcoinBayDrawer = createDrawerNavigator();
 
 export const BitcoinBayNavigation = () => {
   return (
@@ -90,19 +90,19 @@ export const BitcoinBayNavigation = () => {
   );
 };
 
-// export const BitcoinBayDrawerNavigation = () => {
-//   return (
-//     <BitcoinBayDrawer.Navigator>
-//       <BitcoinBayDrawer.Screen name="Home" component={Home} />
-//     </BitcoinBayDrawer.Navigator>
-//   );
-// };
+export const BitcoinBayDrawerNavigation = () => {
+  return (
+    <BitcoinBayDrawer.Navigator>
+      <BitcoinBayDrawer.Screen name="Home" component={Home} />
+    </BitcoinBayDrawer.Navigator>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
-        {/* <BitcoinBayDrawerNavigation /> */}
+        <BitcoinBayDrawerNavigation />
         <BitcoinBayNavigation />
       </NativeBaseProvider>
     </NavigationContainer>

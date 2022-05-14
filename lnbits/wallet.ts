@@ -1,9 +1,13 @@
 import axios from "axios"
-import { lnbitsUrl, lnbitsUserUrl, headers, userInvoiceKey, userAdminKey, userWalletId } from "../util/config"
+import {WalletDetails, CreateInvoice} from "../types/wallet"
+import { lnbitsUrl, lnbitsUserUrl, userInvoiceKey, userAdminKey, userWalletId } from "../util/config"
 
-type CreateInvoice = {
-    amount: number,
-    memo: string
+export const walletDetails = async (): Promise<WalletDetails> => {
+    const header = {
+        "X-Api-Key": userInvoiceKey,
+    }
+    const {data} = await axios.get<WalletDetails>(`${lnbitsUrl}/wallet`, {headers: header})
+    return data
 }
 
 export const payBolt11 = async (bolt11:string) => {
@@ -39,7 +43,6 @@ export const createInvoice = async (data:CreateInvoice) => {
     }
     
     const createdInvoice = await axios.post(`${lnbitsUrl}/payments`, body ,{headers: header})
-    console.log("Res", createdInvoice.data)
     return createdInvoice
 }
 
