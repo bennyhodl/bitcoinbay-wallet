@@ -9,5 +9,8 @@ interface Invoice {
     Send: undefined;
     Camera: undefined;
     CreateInvoice: Invoice;
+    Transactions: undefined; 
+    Deals: undefined;
+    Maps: undefined;
   };
   
