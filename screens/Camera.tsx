@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, Center, VStack, Box, ZStack} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
+import {Text, Center} from 'native-base';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
-import {Camera} from "expo-camera"
-import Svg, {Path, Circle, Rect} from "react-native-svg"
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import {decodeInvoice} from "../lnbits/wallet"
+
 type CameraScreenProp = NativeStackNavigationProp<
   BitcoinBayParamList,
   'Camera'
@@ -13,22 +14,30 @@ type CameraScreenProp = NativeStackNavigationProp<
 const CameraScreen = () => {
   const navigation = useNavigation<CameraScreenProp>();
   const [permissions, setPermissions] = useState(false)
+  const [scanned, setScanned] = useState<boolean>(false)
 
   useEffect(() => {
-    permisionFunction()
+    getCameraPermission()
   }, [])
 
-  const permisionFunction = async () => {
-    const cameraPermission = await Camera.requestPermissionsAsync();
+  const getCameraPermission = async () => {
+    const cameraPermission = await BarCodeScanner.requestPermissionsAsync()
 
     setPermissions(cameraPermission.status === 'granted');
 
-    if (
-      cameraPermission.status !== 'granted'
-    ) {
-      alert('Permission for camera access needed.');
+    if (cameraPermission.status !== 'granted') {
+      alert('Permission for camera access needed to scan for Bitcoin.');
     }
   };
+
+    const handleBarCodeScanned = async ({ type, data }: any) => {
+      setScanned(true);
+      const invoice = await decodeInvoice(data)
+      navigation.navigate('Send', {
+        amount: Number(invoice.data.amount_msat) / 1000,
+        description: invoice.data.description
+      })
+    };
 
   if (permissions == false) {
     return (
@@ -42,16 +51,10 @@ const CameraScreen = () => {
       _dark={{bg: 'primary.dark'}}
       _light={{bg: 'primary.light'}}
       flex={1}>
-          <Camera
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={{flex: 1,width:"100%", height:"100%", margin: 0}}
-            type={Camera.Constants.Type.back}
           />
-          {/* <Svg viewBox="0 0 100 100" width={50} style={{position: "absolute"}}>
-            <Path d="M25,2 L2,2 L2,25" fill="none" stroke="#000000" stroke-width="3" />
-            <Path d="M2,75 L2,98 L25,98" fill="none" stroke="#000000" stroke-width="3" />
-            <Path d="M75,98 L98,98 L98,75" fill="none" stroke="#000000" stroke-width="3" />
-            <Path d="M98,25 L98,2 L75,2" fill="none" stroke="#000000" stroke-width="3" />
-          </Svg>  */}
     </Center>
   );
 };
