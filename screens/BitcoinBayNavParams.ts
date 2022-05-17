@@ -1,14 +1,15 @@
 interface Invoice {
   amount: number;
   description: string;
+  pay_req: string;
 }
   
 export type BitcoinBayParamList = {
   Home: undefined;
-  Receive: undefined;
+  CreateInvoice: undefined;
   Send: Invoice;
   Camera: undefined;
-  CreateInvoice: Invoice;
+  Receive: Invoice;
   Transactions: undefined; 
   Deals: undefined;
   Maps: undefined;
