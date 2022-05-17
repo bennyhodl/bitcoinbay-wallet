@@ -10,7 +10,7 @@ const WalletFooter = ({navigation}: any) => {
         <Pressable
           py="2"
           flex={1}
-          onPress={() => navigation.navigate('Receive')}>
+          onPress={() => navigation.navigate('CreateInvoice')}>
           <Center>
             <Text
               letterSpacing="xl"
