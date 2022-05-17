@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
-import {Text, Box, HStack, Button} from 'native-base';
+import {Text, Box, VStack, HStack, Center, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import WalletFooter from '../components/WalletFooter';
-import MapView, {Marker} from 'react-native-maps';
-import {Dimensions} from 'react-native';
-import {stores} from "../util/stores"
 import DrawerButton from '../components/DrawerButton';
-import axios from "axios"
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
@@ -24,32 +20,19 @@ const Home = () => {
       flexDirection="column"
       justifyContent="space-between">
       <DrawerButton />
-      <MapView
-        style={{width: '100%', height: Dimensions.get('window').height - 100}}
-        region={{
-          latitude: 27.964157,
-          longitude: -82.452606,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}>
-        {stores.map(store => {
-          return(
-            <Marker
-            key={store.id}
-            title={store.title}
-            description={store.description}
-            coordinate={{
-              latitude: store.latitude,
-              longitude: store.longitude
-            }}
-            pinColor="#ff581a"
-            />
-          )
-        })}
-      </MapView>
-      <HStack>
-        <WalletFooter navigation={navigation} />
-      </HStack>
+        <Center h="95%">
+          <Text 
+            fontSize="2xl"
+            color="warmGray.600"
+            fontWeight="extrabold"
+            mb={10}>
+              345634 sats
+          </Text>
+          <HStack space={5}>
+            <Button borderRadius="3xl" w={125} h="40px" onPress={() => navigation.navigate('CreateInvoice')}>Receive</Button>
+            <Button borderRadius="3xl" w={125} h="40px" onPress={() => navigation.navigate('Camera')}>Send</Button>
+          </HStack>
+        </Center>
     </Box>
   );
 };

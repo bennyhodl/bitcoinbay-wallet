@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Center} from 'native-base';
-import {RouteProp, useNavigation} from '@react-navigation/native';
+import {Text, Center, Button} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {decodeInvoice} from "../lnbits/wallet"
+import * as Clipboard from "expo-clipboard"
 
 type CameraScreenProp = NativeStackNavigationProp<
   BitcoinBayParamList,
@@ -18,7 +19,7 @@ const CameraScreen = () => {
 
   useEffect(() => {
     getCameraPermission()
-  }, [])
+  }, [permissions])
 
   const getCameraPermission = async () => {
     const cameraPermission = await BarCodeScanner.requestPermissionsAsync()
@@ -30,19 +31,31 @@ const CameraScreen = () => {
     }
   };
 
-    const handleBarCodeScanned = async ({ type, data }: any) => {
-      setScanned(true);
-      const invoice = await decodeInvoice(data)
-      navigation.navigate('Send', {
-        amount: Number(invoice.data.amount_msat) / 1000,
-        description: invoice.data.description
-      })
-    };
+  const handleBarCodeScanned = async ({ type, data }: any) => {
+    setScanned(true);
+    let invoice = await decodeInvoice(data)
+    navigation.navigate('Send', {
+      amount: Number(invoice.data.amount_msat) / 1000,
+      description: invoice.data.description,
+      pay_req: data
+    })
+  };
+
+  const pasteInvoiceFromClipboard = async () => {
+    let clipboard = await Clipboard.getStringAsync()
+    // Validate QR code
+    let invoice = await decodeInvoice(clipboard)
+    navigation.navigate('Send', {
+      amount: Number(invoice.data.amount_msat) / 1000,
+      description: invoice.data.description,
+      pay_req: clipboard
+    })
+  }
 
   if (permissions == false) {
     return (
       <Center>
-        <Text>Fail</Text>
+        <Text>Failed to read QR Code</Text>
       </Center>
     )
   }
@@ -55,6 +68,17 @@ const CameraScreen = () => {
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={{flex: 1,width:"100%", height:"100%", margin: 0}}
           />
+          <Button 
+            position="absolute" 
+            top="80%" 
+            left="34%"
+            w={125} 
+            h="50px" 
+            borderRadius="3xl" 
+            backgroundColor="#444444"
+            onPress={async () => await pasteInvoiceFromClipboard()}>
+              Paste Invoice
+          </Button>
     </Center>
   );
 };

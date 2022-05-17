@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, Button, VStack, Box, HStack, Input} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -16,19 +16,27 @@ type PaymentStatus = {
   status: boolean
 }
 
-const Send = () => {
+type Invoice = {
+  amount: number,
+  description: string,
+  pay_req: string
+}
+
+type InvoiceProps = {
+  route: RouteProp<BitcoinBayParamList, 'Send'>
+}
+
+const Send = (props: InvoiceProps) => {
   const navigation = useNavigation<SendScreenProp>();
-  const [amount, setAmount] = useState<string>('0');
-  const [invoice, setInvoice] = useState<string>('');
+  const {amount, description, pay_req} = props.route.params
   const [loading, setLoading] = useState<boolean>(false)
   const [paid, setPaid] = useState<PaymentStatus>({paid: false, status: false})
-
+  
   const sendPayment = async (invoice: string) => {
     setLoading(true)
     const status = await payBolt11(invoice)
     setLoading(false)
     setPaid({paid: true, status: status.data})
-
   }
 
   if (loading) {
@@ -38,6 +46,7 @@ const Send = () => {
   if (paid.paid) {
     return <Paid paid={paid.status}/>
   }
+
   return (
     <Box
       _dark={{bg: 'primary.dark'}}
@@ -58,30 +67,15 @@ const Send = () => {
             </Text>
           </HStack>
           {/* Add Bitcoin price in USD */}
-          <HStack>
-            <Input
-              variant="outline"
-              placeholder="Invoice"
-              width="75%"
-              keyboardAppearance="dark"
-              value={invoice}
-              onChangeText={text => setInvoice(text)}
-            />
-            {/* Go to camera screen */}
-            <Button ml={1} onPress={() => navigation.navigate("Camera")}>
-              <FontAwesomeIcon icon={faCamera} color="#ffffff" />
-            </Button>
-          </HStack>
+          <Text>{description}</Text>
           <Button
             w="70%"
             mt={5}
             rounded="full"
-            onPress={() => sendPayment(invoice)}>
+            onPress={() => sendPayment(pay_req)}>
             Pay
           </Button>
         </VStack>
-    {/* } */}
-
     </Box>
   );
 };
