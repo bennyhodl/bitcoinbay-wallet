@@ -2,6 +2,8 @@ import axios from "axios"
 import {WalletDetails, CreateInvoice} from "../types/wallet"
 import { lnbitsUrl, lnbitsUserUrl, userInvoiceKey, userAdminKey, userWalletId } from "../util/config"
 
+// Refactor to an LnBits class with storage of user data.
+
 export const walletDetails = async (): Promise<WalletDetails> => {
     const header = {
         "X-Api-Key": userInvoiceKey,
@@ -25,8 +27,8 @@ export const payBolt11 = async (bolt11:string) => {
     return pay
 }
 
-export const getUserTransactions = async (id:string) => {
-    const tx = await axios.get(`${lnbitsUserUrl}/wallets${id}`)
+export const getUserTransactions = async () => {
+    const tx = await axios.get(`${lnbitsUserUrl}/wallets${userWalletId}`)
     return tx
 }
 
