@@ -43,6 +43,9 @@ const CameraScreen = () => {
 
   const pasteInvoiceFromClipboard = async () => {
     let clipboard = await Clipboard.getStringAsync()
+    if (!clipboard) {
+      return alert("Nothing copied from clipboard")
+    }
     // Validate QR code
     let invoice = await decodeInvoice(clipboard)
     navigation.navigate('Send', {

@@ -48,7 +48,6 @@ const CopyInvoice = (props: CopyInvoiceProps) => {
 
 const Receive = (props: InvoiceProps) => {
   const navigation = useNavigation<ReceiveScreenProp>();
-  const [loading, setLoading] = useState<boolean>(false)
 
   const onShare = async () => {
     try {
