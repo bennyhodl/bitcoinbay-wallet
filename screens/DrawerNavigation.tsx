@@ -12,8 +12,8 @@ const Drawer = () => {
     <BitcoinBayDrawer.Navigator>
       <BitcoinBayDrawer.Screen options={{headerShown: false}} name="Wallet" component={BitcoinBayNavigation} />
       <BitcoinBayDrawer.Screen name="Transactions" component={Transactions} />
-      <BitcoinBayDrawer.Screen name="Deals" component={Deals} />
-      <BitcoinBayDrawer.Screen name="Map" component={Map} />
+      {/* <BitcoinBayDrawer.Screen name="Deals" component={Deals} /> */}
+      {/* <BitcoinBayDrawer.Screen name="Map" component={Map} /> */}
     </BitcoinBayDrawer.Navigator>
   );
 };
