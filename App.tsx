@@ -33,7 +33,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
-        <DrawerNavigation />
+          <DrawerNavigation />
       </NativeBaseProvider>
     </NavigationContainer>
   );
