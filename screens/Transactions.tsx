@@ -4,6 +4,7 @@ import { BitcoinBayParamList } from "./BitcoinBayNavParams"
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, Text, VStack } from "native-base";
 import {getUserTransactions} from "../lnbits/wallet"
+import { Transaction } from "../types/wallet";
 import Loading from "../components/Loading";
 
 type TransactionScreenProps =  NativeStackNavigationProp<
@@ -11,29 +12,16 @@ BitcoinBayParamList,
 'Transactions'
 >;
 
-type Transaction = {
-    memo: string,
-    date: string,
-    amount: number
-}
-const example: Transaction = {
-    memo: "This is a test",
-    date: "January 9, 2009",
-    amount: 50000
-}
-
 const Transactions = () => {
     const navigation = useNavigation<TransactionScreenProps>()
     const [loading, setLoading] = useState<boolean>(false)
-    const [transactions, setTransactions] = useState<Transaction>()
+    const [transactions, setTransactions] = useState<Transaction[]>()
     
     const fetchTransactions = async () => {
-        setLoading(false)
+        setLoading(true)
         const userTx = await getUserTransactions()
-        if (userTx.status === 200) {
-            setLoading(false)
-            setTransactions(userTx.data)
-        }
+        setLoading(false)
+        setTransactions(userTx)
     }
 
     useEffect(() => {
@@ -51,20 +39,17 @@ const Transactions = () => {
           px={4}
           flex={1}
         >
-            <HStack style={{justifyContent: "space-between", alignItems: "center"}} py={4}>
-                <VStack>
-                    <Text style={{fontSize: 15}}>{example.memo}</Text>
-                    <Text style={{fontSize: 15}}>{example.date}</Text>
-                </VStack>
-                <Text style={{fontWeight: "bold"}}>{example.amount} sats</Text> 
-            </HStack>
-            <HStack style={{justifyContent: "space-between", alignItems: "center"}}>
-                <VStack>
-                    <Text style={{fontSize: 15}}>{example.memo}</Text>
-                    <Text style={{fontSize: 10}}>{example.date}</Text>
-                </VStack>
-                <Text style={{fontWeight: "bold"}}>{example.amount} sats</Text> 
-            </HStack>
+            {transactions?.map(transaction => {
+                return (
+                    <HStack style={{justifyContent: "space-between", alignItems: "center"}} py={4}>
+                        <VStack>
+                            <Text style={{fontSize: 15}} fontWeight="bold">{transaction.memo}</Text>
+                            {/* <Text style={{fontSize: 15}}>{date.toISOString()}</Text> */}
+                        </VStack>
+                        <Text color={transaction.amount < 0 ? "#FF0000": "#00FF00"} style={{fontWeight: "bold"}}>{transaction.amount.toLocaleString()} sats</Text> 
+                    </HStack>
+                )
+            })}
         </Box>
     )
 }
