@@ -28,8 +28,12 @@ export const payBolt11 = async (bolt11:string) => {
 }
 
 export const getUserTransactions = async () => {
-    const tx = await axios.get(`${lnbitsUserUrl}/wallets${userWalletId}`)
-    return tx
+    const header = {
+        "X-Api-Key": userInvoiceKey,
+        "Content-type": "application/json"
+    }
+    const {data} = await axios.get(`${lnbitsUserUrl}/transactions/${userWalletId}`, {headers: header})
+    return data
 }
 
 export const createInvoice = async (data:CreateInvoice) => {
