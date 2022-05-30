@@ -1,11 +1,11 @@
+import {createContext, Component} from "react"
 import * as SecureStore from "expo-secure-store"
 import {WalletDetails, CreateInvoice} from "../types/wallet"
 import axios from "axios"
 import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
 
-class LnBits {
-
-    constructor() {}
+const LnBitsContext = createContext(true)
+class LnBits extends Component {
     
     private createAccount = () => {}
 
@@ -134,6 +134,30 @@ class LnBits {
         const invoice = await axios.get(`${lnbitsUrl}/payments/${hash}`, {headers: header})
         return invoice
     }
+
+// class UserProvider extends Component {
+//   // Context state
+//   state = {
+//     user: {},
+//   }
+
+//   // Method to update state
+//   setUser = (user) => {
+//     this.setState((prevState) => ({ user }))
+//   }
+
+//   render() {
+//     const { children } = this.props
+//     const { user } = this.state
+//     const { setUser } = this
+
+    
+//   }
+// }
+
+// export default UserContext
+
+// export { UserProvider }
 
 }
 

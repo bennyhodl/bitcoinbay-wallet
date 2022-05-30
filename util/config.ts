@@ -34,12 +34,3 @@ export const theme = extendTheme({
 
 export const lnbitsUserUrl = "https://legend.lnbits.com/usermanager/api/v1"
 export const lnbitsUrl = "https://legend.lnbits.com/api/v1"
-export const lnbitsInvoiceKey = "150a396709934a9ea2d0f6ee8b11b3fa"
-export const headers = {"X-Api-Key": lnbitsInvoiceKey}
-
-export const userId = "dee1b3af9cac43ba9980a49a291524a2"
-export const userWalletId = "d5a2481cfaea4dd5baafa50d563bbf0d"
-export const userAdminKey = "73845e969e1d400c89215dafe2dac682"
-export const userInvoiceKey = "a28a9f9ec8a4424783738e06a965bdf5"
-
-const link = "https://legend.lnbits.com/wallet?usr=51b170b5296941d4bfd2c5cb553e117c&wal=58ce3d3b5fb74678935adfb8f35a50b8"
