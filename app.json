@@ -5,11 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.jpg",
-    "splash": {
-      "image": "./assets/bitcoin.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,17 +12,30 @@
       "**/*"
     ],
     "ios": {
+      "splash": {
+        "image": "./assets/logo.jpg",
+        "resizeMode": "cover"
+      },
       "supportsTablet": true,
       "bundleIdentifier": "io.bitcoinbay.baywallet"
     },
     "android": {
+      "splash": {
+        "mdpi": "./assets/logo.jpg",
+        "hdpi": "./assets/logo.jpg",
+        "xhdpi": "./assets/logo.jpg",
+        "xxhdpi": "./assets/logo.jpg",
+        "xxxhdpi": "./assets/logo.jpg",
+        "resizeMode": "cover"
+      },
+      "package": "io.bitcoinbay.baywallet",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.jpg",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     }
   }
 }
