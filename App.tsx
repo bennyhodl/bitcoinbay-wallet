@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'mobx-react';
 import stores from "./stores"
 import BayWalletNavigation from "./screens/BayWalletNavigation"
@@ -24,7 +24,16 @@ import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 // };
 
 const App = () => {
-  const loggedIn = stores.userStore.loggedIn
+  const {checkLoggedIn} = stores.userStore
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  console.log("Refresh app.tsx: ", loggedIn)
+  const userLoggedIn = async () => {
+    const login = await checkLoggedIn()
+    setLoggedIn(login)
+  }
+  useEffect(() => {
+    userLoggedIn()
+  }, [loggedIn])
 
   if (!loggedIn) {
     return (
@@ -38,4 +47,5 @@ const App = () => {
     </Provider>
   );
 };
+
 export default App;
