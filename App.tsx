@@ -1,9 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {NativeBaseProvider} from 'native-base';
 import { Provider } from 'mobx-react';
-import Stores from "./stores/Stores"
-import {theme} from './util/config';
+import stores from "./stores"
 import BayWalletNavigation from "./screens/BayWalletNavigation"
 import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 
@@ -26,7 +24,7 @@ import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 // };
 
 const App = () => {
-  const loggedIn = Stores.userStore.loggedIn
+  const loggedIn = stores.userStore.loggedIn
 
   if (!loggedIn) {
     return (
@@ -35,10 +33,8 @@ const App = () => {
   }
 
   return (
-    <Provider userStore={Stores.userStore}>
-      <NativeBaseProvider theme={theme}>
-          <BayWalletNavigation />
-      </NativeBaseProvider>
+    <Provider userStore={stores.userStore} lnbitsStore={stores.lnbitsStore}>
+        <BayWalletNavigation />
     </Provider>
   );
 };

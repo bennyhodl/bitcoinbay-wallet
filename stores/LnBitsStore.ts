@@ -1,39 +1,31 @@
-import {createContext, Component} from "react"
 import * as SecureStore from "expo-secure-store"
-import {WalletDetails, CreateInvoice} from "../types/wallet"
+import {WalletDetails, CreateInvoice, Transaction} from "../types/wallet"
 import axios from "axios"
 import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
+import { action, observable } from "mobx"
 
-const LnBitsContext = createContext(true)
-class LnBits extends Component {
-    
-    private createAccount = () => {}
+export default class LnBitsStore {
 
-    private storeUserId = async (id:string) => {
-        await SecureStore.setItemAsync("userId", id)
-    }
+    @observable
+    walletDetails: WalletDetails | undefined = undefined
+    @observable
+    transactions: Transaction[] | undefined = undefined
 
-    private storeWalletId = async (id:string) => {
+    @action
+    storeWalletId = async (id:string) => {
         await SecureStore.setItemAsync("walletId", id)
     }
 
-    private invoiceKey = async (key:string) => {
+    @action
+    storeInvoiceKey = async (key:string) => {
         await SecureStore.setItemAsync("invoiceKey", key)
     }
 
-    private adminKey = async (key:string) => {
+    @action
+    storeAdminKey = async (key:string) => {
         await SecureStore.setItemAsync("adminKey", key)
     }
-
-    private getUserId = async () => {
-        let id = await SecureStore.getItemAsync("userId")
-        if (id) {
-            return id
-        } else {
-            return "No user id"
-        }
-    }
-
+    
     private getWalletId = async () => {
         let id = await SecureStore.getItemAsync("walletId")
         if (id) {
@@ -61,15 +53,17 @@ class LnBits extends Component {
         }
     }
 
-    walletDetails = async (): Promise<WalletDetails> => {
+    @action
+    getWalletDetails = async () => {
         let userInvoiceKey = await this.getInvoiceKey()
         const header = {
             "X-Api-Key": userInvoiceKey,
         }
-        const {data} = await axios.get<WalletDetails>(`${lnbitsUrl}/wallet`, {headers: header})
-        return data
+        const wallet = await axios.get<WalletDetails>(`${lnbitsUrl}/wallet`, {headers: header})
+        this.walletDetails = wallet.data
     }
 
+    @action
     payBolt11 = async (bolt11:string) => {
         let adminKey = await this.getAdminKey()
         const body = {
@@ -86,12 +80,19 @@ class LnBits extends Component {
         return pay
     }
 
+    @action
     getUserTransactions = async () => {
         let walletId = await this.getWalletId()
-        const tx = await axios.get(`${lnbitsUserUrl}/wallets${walletId}`)
-        return tx
+        let invoiceKey = await this.getInvoiceKey()
+        const header = {
+            "X-Api-Key": invoiceKey,
+            "Content-type": "application/json"
+        }
+        const transactions = await axios.get(`${lnbitsUserUrl}/transactions/${walletId}`, {headers: header})
+        this.transactions = transactions.data
     }
 
+    @action
     createInvoice = async (data:CreateInvoice) => {
         let invoiceKey = await this.getInvoiceKey()
         const body = {
@@ -109,6 +110,7 @@ class LnBits extends Component {
         return createdInvoice
     }
 
+    @action
     decodeInvoice = async (invoice:string) => {
         let invoiceKey = await this.getInvoiceKey()
         const body = {
@@ -124,6 +126,7 @@ class LnBits extends Component {
         return decodedInvoice
     }
 
+    @action
     trackInvoice = async (hash:string) => {
         let invoiceKey = await this.getInvoiceKey()
         const header = {
@@ -134,31 +137,4 @@ class LnBits extends Component {
         const invoice = await axios.get(`${lnbitsUrl}/payments/${hash}`, {headers: header})
         return invoice
     }
-
-// class UserProvider extends Component {
-//   // Context state
-//   state = {
-//     user: {},
-//   }
-
-//   // Method to update state
-//   setUser = (user) => {
-//     this.setState((prevState) => ({ user }))
-//   }
-
-//   render() {
-//     const { children } = this.props
-//     const { user } = this.state
-//     const { setUser } = this
-
-    
-//   }
-// }
-
-// export default UserContext
-
-// export { UserProvider }
-
 }
-
-export default LnBits
