@@ -1,13 +1,10 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {NativeBaseProvider} from 'native-base';
-import {NavigationContainer} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider } from 'mobx-react';
 import Stores from "./stores/Stores"
 import {theme} from './util/config';
-import DrawerNavigation from "./screens/DrawerNavigation"
-import Loading from './components/Loading';
+import BayWalletNavigation from "./screens/BayWalletNavigation"
 import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 
 // Color Switch Component
@@ -29,38 +26,19 @@ import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 // };
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
-  const [init, setInit] = useState(true);
+  const loggedIn = Stores.userStore.loggedIn
 
-  const checkInit = async () => {
-    setLoading(true)
-    try {
-      const value = await AsyncStorage.getItem('init');
-      if (value === "false") {
-        setInit(false);
-      }
-    } catch (err) {
-      console.log('Error retrieving init in App.tsx', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkInit();
-  }, []);
-
-  if (init) {
-    return <OnboardingNavigation />
+  if (!loggedIn) {
+    return (
+      <OnboardingNavigation />
+    )
   }
 
   return (
     <Provider userStore={Stores.userStore}>
-      <NavigationContainer>
-        <NativeBaseProvider theme={theme}>
-            {loading ? <Loading /> : <DrawerNavigation />}
-        </NativeBaseProvider>
-      </NavigationContainer>
+      <NativeBaseProvider theme={theme}>
+          <BayWalletNavigation />
+      </NativeBaseProvider>
     </Provider>
   );
 };

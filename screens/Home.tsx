@@ -5,6 +5,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import DrawerButton from '../components/DrawerButton';
 import { walletDetails } from '../lnbits/wallet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
