@@ -13,5 +13,7 @@ export type BitcoinBayParamList = {
   Transactions: undefined; 
   Deals: undefined;
   Maps: undefined;
+  CreateWallet: undefined
+  Wallet: undefined
 };
   
