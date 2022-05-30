@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store"
-import {WalletDetails, CreateInvoice, Transaction} from "../types/wallet"
+import {WalletDetails, CreateInvoice, Transaction, CreateWallet} from "../types/wallet"
 import axios from "axios"
 import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
 import { action, observable } from "mobx"
@@ -51,6 +51,26 @@ export default class LnBitsStore {
         } else {
             return "No invoice key"
         }
+    }
+
+    @action
+    createWallet = async (name:string, email?:string) => {
+        const invoiceKey = "150a396709934a9ea2d0f6ee8b11b3fa"
+
+        const header = {
+            "X-Api-Key": invoiceKey,
+            "Content-type": "application/json"
+        }
+   
+        const body = {
+            admin_id: "51b170b5296941d4bfd2c5cb553e117c",
+            user_name: name,
+            wallet_name: name,
+            email: email
+        }
+
+        const data = await axios.post(`${lnbitsUserUrl}/users`, body, {headers: header})
+        return data
     }
 
     @action
