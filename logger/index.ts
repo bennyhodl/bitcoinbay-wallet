@@ -1,3 +1,3 @@
 import {enableLogging} from "mobx-logger"
 
-enableLogging()
+enableLogging({predicate: () => __DEV__ && Boolean(window.navigator.userAgent)})
