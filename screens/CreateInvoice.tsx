@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Text, Input, Box, VStack, HStack, Button} from 'native-base';
+import { observer } from 'mobx-react';
+import stores from "../stores"
+import {Text, Input, Box, VStack, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
-import {createInvoice} from "../lnbits/wallet"
 import Loading from '../components/Loading';
 
 type CreateInvoiceScreenProp = NativeStackNavigationProp<
@@ -11,8 +12,9 @@ type CreateInvoiceScreenProp = NativeStackNavigationProp<
   'CreateInvoice'
 >;
 
-const CreateInvoice = () => {
+const CreateInvoice = observer(() => {
   const navigation = useNavigation<CreateInvoiceScreenProp>();
+  const {createInvoice} = stores.lnbitsStore
   const [amount, setAmount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false)
@@ -72,6 +74,6 @@ const CreateInvoice = () => {
       </VStack>
     </Box>
   );
-};
+});
 
 export default CreateInvoice

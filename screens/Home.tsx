@@ -1,28 +1,34 @@
 import React, {useEffect, useState} from 'react';
+import { observer } from 'mobx-react';
+import stores from "../stores"
 import {Text, Box, HStack, Center, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import DrawerButton from '../components/DrawerButton';
-import { walletDetails } from '../lnbits/wallet';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../components/Loading';
 
 type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
-const Home = () => {
+const Home = observer(() => {
   const navigation = useNavigation<HomeScreenProp>();
-  const [balance, setBalance] = useState(0)
-  const [name, setName] = useState("Pleb")
-  const getWalletDetails = async () => {
-    const wallet = await walletDetails()
-    setBalance(wallet.balance)
-    setName(wallet.name)
+  const [loading, setLoading] = useState(false)
+  const {walletDetails, getWalletDetails} = stores.lnbitsStore
+
+  const callWalletDetails = async () => {
+    setLoading(true)
+    await getWalletDetails()
+    setLoading(false)
   }
 
   useEffect(() => {
-    getWalletDetails()
+    callWalletDetails()
   }, [])
- 
+  
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <Box
       _dark={{bg: 'primary.dark'}}
@@ -38,14 +44,14 @@ const Home = () => {
             color="warmGray.600"
             fontWeight="extrabold"
             mb={10}>
-              Hello, {name}
+              Hello, {walletDetails.name}
           </Text>
           <Text 
             fontSize="2xl"
             color="warmGray.600"
             fontWeight="extrabold"
             mb={10}>
-              {balance.toLocaleString()} sats
+              {(walletDetails.balance / 1000).toLocaleString()} sats
           </Text>
           <HStack space={5}>
             <Button borderRadius="3xl" w={125} h="40px" onPress={() => navigation.navigate('CreateInvoice')}>Receive</Button>
@@ -54,6 +60,6 @@ const Home = () => {
         </Center>
     </Box>
   );
-};
+});
 
 export default Home;

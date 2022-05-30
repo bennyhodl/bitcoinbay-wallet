@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Share} from 'react-native';
 import {Text, Box, VStack, HStack, Pressable, Button} from 'native-base';
 import * as Clipboard from 'expo-clipboard';

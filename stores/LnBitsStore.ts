@@ -2,12 +2,16 @@ import * as SecureStore from "expo-secure-store"
 import {WalletDetails, CreateInvoice, Transaction, CreateWallet} from "../types/wallet"
 import axios from "axios"
 import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
-import { action, observable } from "mobx"
+import { action, makeObservable, observable } from "mobx"
 
 export default class LnBitsStore {
 
+    constructor() {
+        makeObservable(this)
+    }
+    
     @observable
-    walletDetails: WalletDetails | undefined = undefined
+    walletDetails: WalletDetails = {name: "", balance: 0}
     @observable
     transactions: Transaction[] | undefined = undefined
 

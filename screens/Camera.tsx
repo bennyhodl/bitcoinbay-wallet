@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {observer} from "mobx-react"
+import stores from "../stores"
 import {Text, Center, Button} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import {decodeInvoice} from "../lnbits/wallet"
 import * as Clipboard from "expo-clipboard"
 
 type CameraScreenProp = NativeStackNavigationProp<
@@ -12,10 +13,11 @@ type CameraScreenProp = NativeStackNavigationProp<
   'Camera'
 >;
 
-const CameraScreen = () => {
+const CameraScreen = observer(() => {
   const navigation = useNavigation<CameraScreenProp>();
   const [permissions, setPermissions] = useState(false)
   const [scanned, setScanned] = useState<boolean>(false)
+  const {decodeInvoice} = stores.lnbitsStore
 
   useEffect(() => {
     getCameraPermission()
@@ -27,7 +29,7 @@ const CameraScreen = () => {
     setPermissions(cameraPermission.status === 'granted');
 
     if (cameraPermission.status !== 'granted') {
-      alert('Permission for camera access needed to scan for Bitcoin.');
+      alert('Permission for camera access needed to scan invoices.');
     }
   };
 
@@ -84,6 +86,6 @@ const CameraScreen = () => {
           </Button>
     </Center>
   );
-};
+});
 
 export default CameraScreen

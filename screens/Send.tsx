@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import {observer} from "mobx-react"
+import stores from "../stores"
 import {Text, Button, VStack, Box, HStack, Input} from 'native-base';
 import {RouteProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {BitcoinBayParamList} from './BitcoinBayNavParams';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCamera} from '@fortawesome/free-solid-svg-icons';
 import Loading from '../components/Loading'
 import Paid from "../components/Paid"
-import {payBolt11} from "../lnbits/wallet"
 
 type SendScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
@@ -16,18 +15,13 @@ type PaymentStatus = {
   status: boolean
 }
 
-type Invoice = {
-  amount: number,
-  description: string,
-  pay_req: string
-}
-
 type InvoiceProps = {
   route: RouteProp<BitcoinBayParamList, 'Send'>
 }
 
-const Send = (props: InvoiceProps) => {
+const Send = observer((props: InvoiceProps) => {
   const navigation = useNavigation<SendScreenProp>();
+  const {payBolt11} = stores.lnbitsStore
   const {amount, description, pay_req} = props.route.params
   const [loading, setLoading] = useState<boolean>(false)
   const [paid, setPaid] = useState<PaymentStatus>({paid: false, status: false})
@@ -78,6 +72,6 @@ const Send = (props: InvoiceProps) => {
         </VStack>
     </Box>
   );
-};
+});
 
 export default Send;

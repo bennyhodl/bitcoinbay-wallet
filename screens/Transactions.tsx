@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react"
+import {observer} from "mobx-react"
+import stores from "../stores"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BitcoinBayParamList } from "./BitcoinBayNavParams"
 import { useNavigation } from "@react-navigation/native";
@@ -12,16 +14,15 @@ BitcoinBayParamList,
 'Transactions'
 >;
 
-const Transactions = () => {
+const Transactions = observer(() => {
     const navigation = useNavigation<TransactionScreenProps>()
+    const {transactions, getUserTransactions} = stores.lnbitsStore
     const [loading, setLoading] = useState<boolean>(false)
-    const [transactions, setTransactions] = useState<Transaction[]>()
     
     const fetchTransactions = async () => {
         setLoading(true)
-        const userTx = await getUserTransactions()
+        await getUserTransactions()
         setLoading(false)
-        setTransactions(userTx)
     }
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const Transactions = () => {
         >
             {transactions?.map(transaction => {
                 return (
-                    <HStack style={{justifyContent: "space-between", alignItems: "center"}} py={4}>
+                    <HStack style={{justifyContent: "space-between", alignItems: "center"}} py={4} key={Date.now()}>
                         <VStack>
                             <Text style={{fontSize: 15}} fontWeight="bold">{transaction.memo}</Text>
                             {/* <Text style={{fontSize: 15}}>{date.toISOString()}</Text> */}
@@ -52,6 +53,6 @@ const Transactions = () => {
             })}
         </Box>
     )
-}
+})
 
 export default Transactions
