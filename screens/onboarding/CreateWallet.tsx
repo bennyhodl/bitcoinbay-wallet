@@ -1,14 +1,11 @@
 import React, {useState} from "react"
 import { Center, Text, Input, Button } from "native-base"
-import { createWallet } from "../../lnbits/wallet"
 import Loading from "../../components/Loading"
-import { storeAdminKey, storeInvoiceKey, storeUserId, storeWalletId } from "../../lnbits/storage"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { BitcoinBayParamList } from "../BitcoinBayNavParams"
-import stores from "../../stores/Stores"
-import { inject, observer } from "mobx-react"
+import stores from "../../stores"
+import { observer } from "mobx-react"
 
 type CreateWalletScreenProp = NativeStackNavigationProp<
   BitcoinBayParamList,
@@ -20,19 +17,20 @@ const CreateWallet = observer(() => {
     const [email, setEmail] = useState<string>("")
     const [name, setName] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
-    const {user, addUser} = stores.userStore
+    const {user, addUser, logIn, loggedIn} = stores.userStore
+    const {storeWalletId, storeInvoiceKey, storeAdminKey, createWallet} = stores.lnbitsStore
 
     const newWallet = async () => {
         setLoading(true)
         const newUser = await createWallet(name, email)
-        const wallet = newUser.wallets[0]
-        storeUserId(newUser.id)
+        const wallet = newUser.data.wallets[0]
         storeWalletId(wallet.id)
         storeInvoiceKey(wallet.inkey)
         storeAdminKey(wallet.adminkey)
-        setLoading(false)
-        await AsyncStorage.setItem('init', "false")
         addUser(wallet.name)
+        await logIn()
+        console.log("Logged in:", loggedIn)
+        setLoading(false)
     }
 
     if (loading) {
@@ -40,7 +38,8 @@ const CreateWallet = observer(() => {
     }
     return(
         <Center h="100%">
-            <Text fontSize={20} fontWeight="bold">Create a wallet {user}</Text>
+            <Text fontSize={25} fontWeight="bold">Welcome to Bitcoin Bay!</Text>
+            <Text fontSize={20}>Create your wallet</Text>
             <Input
                 variant="outline"
                 placeholder="Wallet name"
