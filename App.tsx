@@ -1,9 +1,18 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
-import { Provider } from 'mobx-react';
-import stores from "./stores"
+import React from 'react';
+import AppProvider from './AppProvider';
 import BayWalletNavigation from "./screens/BayWalletNavigation"
-import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
+
+const App = () => {
+
+  return (
+    <AppProvider>
+      <BayWalletNavigation />
+    </AppProvider>
+  );
+};
+
+export default App;
 
 // Color Switch Component
 // const ToggleDarkMode = () => {
@@ -22,30 +31,3 @@ import OnboardingNavigation from './screens/onboarding/OnboardingNavigation';
 //     </HStack>
 //   );
 // };
-
-const App = () => {
-  const {checkLoggedIn} = stores.userStore
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  console.log("Refresh app.tsx: ", loggedIn)
-  const userLoggedIn = async () => {
-    const login = await checkLoggedIn()
-    setLoggedIn(login)
-  }
-  useEffect(() => {
-    userLoggedIn()
-  }, [loggedIn])
-
-  if (!loggedIn) {
-    return (
-      <OnboardingNavigation />
-    )
-  }
-
-  return (
-    <Provider userStore={stores.userStore} lnbitsStore={stores.lnbitsStore}>
-        <BayWalletNavigation />
-    </Provider>
-  );
-};
-
-export default App;
