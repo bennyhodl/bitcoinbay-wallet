@@ -17,7 +17,7 @@ const CreateWallet = observer(() => {
     const [email, setEmail] = useState<string>("")
     const [name, setName] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
-    const {user, addUser, logIn, loggedIn} = stores.userStore
+    const {addUser, login} = stores.userStore
     const {storeWalletId, storeInvoiceKey, storeAdminKey, createWallet} = stores.lnbitsStore
 
     const newWallet = async () => {
@@ -28,14 +28,14 @@ const CreateWallet = observer(() => {
         storeInvoiceKey(wallet.inkey)
         storeAdminKey(wallet.adminkey)
         addUser(wallet.name)
-        await logIn()
-        console.log("Logged in:", loggedIn)
+        await login()
         setLoading(false)
     }
 
     if (loading) {
         return <Loading />
     }
+
     return(
         <Center h="100%">
             <Text fontSize={25} fontWeight="bold">Welcome to Bitcoin Bay!</Text>
@@ -58,7 +58,7 @@ const CreateWallet = observer(() => {
                 value={email}
                 onChangeText={text => setEmail(text)}
             />
-            <Button onPress={() => newWallet()} mt={5}>Create Wallet</Button>
+            <Button borderRadius="3xl" w={125} h="40px" onPress={() => newWallet()} mt={5}>Create Wallet</Button>
         </Center>
     )
 })

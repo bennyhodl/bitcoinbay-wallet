@@ -1,12 +1,22 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Home, Receive, Send, Camera, CreateInvoice} from './index';
 import CreateWallet from "./onboarding/CreateWallet";
+import stores from "../stores"
+import { observer } from "mobx-react";
+import Loading from "../components/Loading";
 
-const BitcoinBayNavigation = () => {
+const BitcoinBayNavigation = observer(() => {
     const BitcoinBay = createNativeStackNavigator();
-    return (
-      <BitcoinBay.Navigator initialRouteName="Home">
+    const {loggedIn, checkLoggedIn} = stores.userStore
+    
+    useEffect(() => {
+      checkLoggedIn()
+    }, [])
+
+    if (!loggedIn) {
+      return (
+        <BitcoinBay.Navigator>
           <BitcoinBay.Screen
             name="CreateWallet"
             component={CreateWallet}
@@ -14,6 +24,11 @@ const BitcoinBayNavigation = () => {
               headerShown: false
             }}
           />
+        </BitcoinBay.Navigator>
+      )
+    }
+    return (
+      <BitcoinBay.Navigator initialRouteName="Home">
           <BitcoinBay.Screen
             name="Home"
             component={Home}
@@ -64,6 +79,6 @@ const BitcoinBayNavigation = () => {
           />
       </BitcoinBay.Navigator>
     );
-  };
+  });
 
   export default BitcoinBayNavigation
