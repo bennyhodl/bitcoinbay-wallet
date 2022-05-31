@@ -1,3 +1,4 @@
+import getEnvVars from "../util/environment"
 import * as SecureStore from "expo-secure-store"
 import {WalletDetails, CreateInvoice, Transaction, CreateWallet} from "../types/wallet"
 import axios from "axios"
@@ -5,7 +6,6 @@ import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
 import { action, makeObservable, observable, runInAction } from "mobx"
 
 export default class LnBitsStore {
-
     constructor() {
         makeObservable(this)
     }
@@ -14,6 +14,7 @@ export default class LnBitsStore {
     walletDetails: WalletDetails = {name: "", balance: 0}
     @observable
     transactions: Transaction[] | undefined = undefined
+    private env = getEnvVars()
 
     @action
     storeWalletId = async (id:string) => {
@@ -60,6 +61,7 @@ export default class LnBitsStore {
     @action
     createWallet = async (name:string, email?:string) => {
         const invoiceKey = "150a396709934a9ea2d0f6ee8b11b3fa"
+        console.log("ENV", this.env.userUrl)
 
         const header = {
             "X-Api-Key": invoiceKey,
@@ -73,7 +75,7 @@ export default class LnBitsStore {
             email: email
         }
 
-        const data = await axios.post(`${lnbitsUserUrl}/users`, body, {headers: header})
+        const data = await axios.post(`${this.env.userUrl}/users`, body, {headers: header})
         return data
     }
 
@@ -83,7 +85,7 @@ export default class LnBitsStore {
         const header = {
             "X-Api-Key": userInvoiceKey,
         }
-        const wallet = await axios.get<WalletDetails>(`${lnbitsUrl}/wallet`, {headers: header})
+        const wallet = await axios.get<WalletDetails>(`${this.env.authUrl}/wallet`, {headers: header})
         
         runInAction(() => {
             this.walletDetails = wallet.data
@@ -103,7 +105,7 @@ export default class LnBitsStore {
             "Content-type": "application/json"
         }
     
-        const pay = await axios.post(`${lnbitsUrl}/payments`, body, {headers: header})
+        const pay = await axios.post(`${this.env.authUrl}/payments`, body, {headers: header})
         return pay
     }
 
@@ -115,7 +117,7 @@ export default class LnBitsStore {
             "X-Api-Key": invoiceKey,
             "Content-type": "application/json"
         }
-        const transactions = await axios.get(`${lnbitsUserUrl}/transactions/${walletId}`, {headers: header})
+        const transactions = await axios.get(`${this.env.userUrl}/transactions/${walletId}`, {headers: header})
 
         runInAction(() => {
             this.transactions = transactions.data
@@ -136,7 +138,7 @@ export default class LnBitsStore {
             "Content-type": "application/json"
         }
         
-        const createdInvoice = await axios.post(`${lnbitsUrl}/payments`, body ,{headers: header})
+        const createdInvoice = await axios.post(`${this.env.authUrl}/payments`, body ,{headers: header})
         return createdInvoice
     }
 
@@ -152,7 +154,7 @@ export default class LnBitsStore {
             "Content-type": "application/json"
         }
     
-        const decodedInvoice = await axios.post(`${lnbitsUrl}/payments/decode`, body, {headers: header})
+        const decodedInvoice = await axios.post(`${this.env.authUrl}/payments/decode`, body, {headers: header})
         return decodedInvoice
     }
 
@@ -164,7 +166,7 @@ export default class LnBitsStore {
             "Content-type": "application/json"
         }
     
-        const invoice = await axios.get(`${lnbitsUrl}/payments/${hash}`, {headers: header})
+        const invoice = await axios.get(`${this.env.authUrl}/payments/${hash}`, {headers: header})
         return invoice
     }
 }
