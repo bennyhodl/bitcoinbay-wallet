@@ -2,7 +2,7 @@ import * as SecureStore from "expo-secure-store"
 import {WalletDetails, CreateInvoice, Transaction, CreateWallet} from "../types/wallet"
 import axios from "axios"
 import {lnbitsUrl, lnbitsUserUrl} from "../util/config"
-import { action, makeObservable, observable } from "mobx"
+import { action, makeObservable, observable, runInAction } from "mobx"
 
 export default class LnBitsStore {
 
@@ -84,7 +84,10 @@ export default class LnBitsStore {
             "X-Api-Key": userInvoiceKey,
         }
         const wallet = await axios.get<WalletDetails>(`${lnbitsUrl}/wallet`, {headers: header})
-        this.walletDetails = wallet.data
+        
+        runInAction(() => {
+            this.walletDetails = wallet.data
+        })
     }
 
     @action
@@ -113,7 +116,10 @@ export default class LnBitsStore {
             "Content-type": "application/json"
         }
         const transactions = await axios.get(`${lnbitsUserUrl}/transactions/${walletId}`, {headers: header})
-        this.transactions = transactions.data
+
+        runInAction(() => {
+            this.transactions = transactions.data
+        })
     }
 
     @action

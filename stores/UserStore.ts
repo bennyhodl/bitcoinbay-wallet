@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default class UserStore {
@@ -11,24 +11,28 @@ export default class UserStore {
     @observable user: string | null = null
 
     @action
-    logIn = async () => {
+    login = async () => {
         await AsyncStorage.setItem('loggedIn', 'true')
-        this.loggedIn = true
-        console.log("Logging in mobx", this.loggedIn)
+        runInAction(() => {
+            this.loggedIn = true
+        })
     }
+
     @action
-    logOut = async () => {
+    logout = async () => {
         await AsyncStorage.setItem('loggedIn', 'false')
-        this.loggedIn = false
-        console.log("Logging out", this.loggedIn)
+        runInAction(() => {
+            this.loggedIn = false
+        })
     }
 
     @action
     checkLoggedIn = async () => {
         const login = await AsyncStorage.getItem('loggedIn')
-        console.log("Checking log in", login)
-        if (login === 'true') return true
-        return false
+        runInAction(() => {
+            if (login === 'true') return this.loggedIn = true
+            return this.loggedIn = false
+        })
     }
 
     @action
