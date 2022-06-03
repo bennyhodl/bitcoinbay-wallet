@@ -30,7 +30,3 @@ export const theme = extendTheme({
     },
   },
 });
-
-
-export const lnbitsUserUrl = "https://legend.lnbits.com/usermanager/api/v1"
-export const lnbitsUrl = "https://legend.lnbits.com/api/v1"
