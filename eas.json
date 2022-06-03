@@ -13,6 +13,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "ben@styng.social",
+        "ascAppId": "1626946620",
+        "appleTeamId": "H66L2D9JNP"
+      }
+    }
   }
 }
