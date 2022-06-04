@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import { RefreshControl, SafeAreaView, ScrollView } from 'react-native';
 import { observer } from 'mobx-react';
 import stores from "../stores"
 import {Text, Box, HStack, Center, Button} from 'native-base';
@@ -12,13 +13,20 @@ type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
 const Home = observer(() => {
   const navigation = useNavigation<HomeScreenProp>();
+  const [refreshing, setRefreshing] = useState<boolean>(false)
   const { loading, setLoading } = stores.appStore
-  const {walletDetails, getWalletDetails} = stores.lnbitsStore
+  const {walletDetails, getWalletDetails, reset} = stores.lnbitsStore
 
   const callWalletDetails = async () => {
     await getWalletDetails()
     setLoading(false)
   }
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    callWalletDetails()
+    setRefreshing(false)
+  }, [])
 
   useEffect(() => {
     callWalletDetails()
@@ -29,20 +37,22 @@ const Home = observer(() => {
   }
 
   return (
-    <Box
-      _dark={{bg: 'primary.dark'}}
-      _light={{bg: 'primary.light'}}
-      height="100%"
-      flex={1}   
-      flexDirection="column"
-      justifyContent="space-between">
-      <DrawerButton />
-        <Center h="95%">
+    <SafeAreaView style={{height: "100%", width: "100%", backgroundColor: '#fff6f2'}}>
+      <ScrollView
+      contentContainerStyle={{flex: 1, alignItems: "center", justifyContent: "center"}}
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        <DrawerButton />
         <Text 
             fontSize="3xl"
             color="warmGray.600"
             fontWeight="extrabold"
-            mb={10}>
+            mb="2">
               Hello, {walletDetails.name}
           </Text>
           <Text 
@@ -56,8 +66,9 @@ const Home = observer(() => {
             <Button borderRadius="3xl" w={125} h="40px" onPress={() => navigation.navigate('CreateInvoice')}>Receive</Button>
             <Button borderRadius="3xl" w={125} h="40px" onPress={() => navigation.navigate('Camera')}>Send</Button>
           </HStack>
-        </Center>
-    </Box>
+          <Button borderRadius="3xl" w={125} h="40px" onPress={() => reset()}>Reset</Button>
+      </ScrollView>
+    </SafeAreaView>
   );
 });
 
