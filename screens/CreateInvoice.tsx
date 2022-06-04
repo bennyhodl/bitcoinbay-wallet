@@ -16,7 +16,7 @@ const CreateInvoice = observer(() => {
   const navigation = useNavigation<CreateInvoiceScreenProp>();
   const {createInvoice} = stores.lnbitsStore
   const [amount, setAmount] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [description, setDescription] = useState<string | undefined>(undefined);
   const { loading, setLoading } = stores.appStore 
 
   if (loading) return <Loading />
@@ -60,11 +60,11 @@ const CreateInvoice = observer(() => {
           rounded="full"
           onPress={async () => {
             setLoading(true)
-            let invoice = await createInvoice({amount: Number(amount), memo: description})
+            let invoice = await createInvoice({amount: Number(amount), memo: description || "Bay Wallet"})
             setLoading(false)
             navigation.navigate('Receive', {
               amount: Number(amount),
-              description: description,
+              description: description || "Bay Wallet",
               pay_req: invoice.data.payment_request
             })
           }
