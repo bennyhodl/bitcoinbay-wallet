@@ -21,13 +21,14 @@ const CreateWallet = observer(() => {
     const {storeWalletId, storeInvoiceKey, storeAdminKey, createWallet} = stores.lnbitsStore
 
     const newWallet = async () => {
-        setLoading(true)
+        alert("Creating wallet!")
         const newUser = await createWallet(name, email)
         const wallet = newUser.data.wallets[0]
         storeWalletId(wallet.id)
         storeInvoiceKey(wallet.inkey)
         storeAdminKey(wallet.adminkey)
         await login()
+        navigation.navigate('Home')
     }
 
     if (loading) {

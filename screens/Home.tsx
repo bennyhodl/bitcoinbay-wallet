@@ -18,7 +18,9 @@ const Home = observer(() => {
   const {walletDetails, getWalletDetails, reset} = stores.lnbitsStore
 
   const callWalletDetails = async () => {
+    setLoading(true)
     await getWalletDetails()
+    setLoading(false)
   }
 
   const onRefresh = useCallback(() => {
