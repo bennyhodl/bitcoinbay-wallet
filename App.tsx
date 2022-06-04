@@ -1,10 +1,24 @@
 import 'react-native-gesture-handler';
-import Constants from 'expo-constants';
-import React from 'react';
+import React, {useState} from 'react';
+import AppLoading from 'expo-app-loading'
+import stores from "./stores"
 import AppProvider from './AppProvider';
 import BayWalletNavigation from "./screens/BayWalletNavigation"
 
 const App = () => {
+  const [appReady, setAppReady] = useState<boolean>(false)
+
+  const {checkLoggedIn} = stores.appStore
+
+  if (!appReady) {
+    return (
+      <AppLoading
+        startAsync={checkLoggedIn}
+        onFinish={() => setAppReady(true)}
+        onError={console.warn}
+      />
+    )
+  }
   return (
     <AppProvider>
       <BayWalletNavigation />
