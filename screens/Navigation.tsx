@@ -4,11 +4,10 @@ import {Home, Receive, Send, Camera, CreateInvoice} from './index';
 import CreateWallet from "./onboarding/CreateWallet";
 import stores from "../stores"
 import { observer } from "mobx-react";
-import Loading from "../components/Loading";
 
 const BitcoinBayNavigation = observer(() => {
     const BitcoinBay = createNativeStackNavigator();
-    const {loggedIn, checkLoggedIn} = stores.userStore
+    const {loggedIn, checkLoggedIn} = stores.appStore
     
     useEffect(() => {
       checkLoggedIn()

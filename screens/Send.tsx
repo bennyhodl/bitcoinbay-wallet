@@ -23,7 +23,7 @@ const Send = observer((props: InvoiceProps) => {
   const navigation = useNavigation<SendScreenProp>();
   const {payBolt11} = stores.lnbitsStore
   const {amount, description, pay_req} = props.route.params
-  const [loading, setLoading] = useState<boolean>(false)
+  const { loading, setLoading } = stores.appStore
   const [paid, setPaid] = useState<PaymentStatus>({paid: false, status: false})
   
   const sendPayment = async (invoice: string) => {

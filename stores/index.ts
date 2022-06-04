@@ -1,13 +1,12 @@
-import UserStore from "./UserStore";
 import LnBitsStore from "./LnBitsStore";
-
+import { AppStore } from "./AppStore";
 class Stores {
-    public userStore: UserStore
     public lnbitsStore: LnBitsStore
+    public appStore: AppStore
 
     constructor() {
-        this.userStore = new UserStore()
         this.lnbitsStore = new LnBitsStore()
+        this.appStore = new AppStore()
     }
 }
 

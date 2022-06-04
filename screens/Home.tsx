@@ -12,11 +12,10 @@ type HomeScreenProp = NativeStackNavigationProp<BitcoinBayParamList, 'Home'>;
 
 const Home = observer(() => {
   const navigation = useNavigation<HomeScreenProp>();
-  const [loading, setLoading] = useState(false)
+  const { loading, setLoading } = stores.appStore
   const {walletDetails, getWalletDetails} = stores.lnbitsStore
 
   const callWalletDetails = async () => {
-    setLoading(true)
     await getWalletDetails()
     setLoading(false)
   }

@@ -1,14 +1,15 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export default class UserStore {
+export class AppStore {
 
     constructor() {
         makeObservable(this)
     }
 
     @observable loggedIn: boolean = false
-    @observable user: string | null = null
+    @observable user: string = ""
+    @observable loading: boolean = false
 
     @action
     login = async () => {
@@ -37,4 +38,9 @@ export default class UserStore {
 
     @action
     addUser = (name:string) => this.user = name
+
+    @action
+    setLoading = (loading:boolean) => {
+        this.loading = loading
+    }
 }

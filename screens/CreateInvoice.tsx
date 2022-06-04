@@ -17,7 +17,7 @@ const CreateInvoice = observer(() => {
   const {createInvoice} = stores.lnbitsStore
   const [amount, setAmount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false)
+  const { loading, setLoading } = stores.appStore 
 
   if (loading) return <Loading />
 

@@ -5,8 +5,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BitcoinBayParamList } from "./BitcoinBayNavParams"
 import { useNavigation } from "@react-navigation/native";
 import { Box, HStack, Text, VStack } from "native-base";
-import {getUserTransactions} from "../lnbits/wallet"
-import { Transaction } from "../types/wallet";
 import Loading from "../components/Loading";
 
 type TransactionScreenProps =  NativeStackNavigationProp<
@@ -17,7 +15,7 @@ BitcoinBayParamList,
 const Transactions = observer(() => {
     const navigation = useNavigation<TransactionScreenProps>()
     const {transactions, getUserTransactions} = stores.lnbitsStore
-    const [loading, setLoading] = useState<boolean>(false)
+    const { loading, setLoading } = stores.appStore
     
     const fetchTransactions = async () => {
         setLoading(true)
