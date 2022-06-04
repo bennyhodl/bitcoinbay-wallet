@@ -19,7 +19,6 @@ const Home = observer(() => {
 
   const callWalletDetails = async () => {
     await getWalletDetails()
-    setLoading(false)
   }
 
   const onRefresh = useCallback(() => {
