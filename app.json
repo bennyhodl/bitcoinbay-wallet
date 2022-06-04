@@ -17,7 +17,8 @@
         "resizeMode": "cover"
       },
       "supportsTablet": true,
-      "bundleIdentifier": "io.bitcoinbay.baywallet"
+      "bundleIdentifier": "io.bitcoinbay.baywallet",
+      "buildNumber": "2"
     },
     "android": {
       "splash": {
