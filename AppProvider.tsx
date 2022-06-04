@@ -6,7 +6,7 @@ import stores from "./stores"
 
 const AppProvider = ({children}:any) => {
     return (
-        <Provider userStore={stores.userStore} lnbitsStore={stores.lnbitsStore}>
+        <Provider appStore={stores.appStore} lnbitsStore={stores.lnbitsStore}>
             <NativeBaseProvider theme={theme}>
                 {children}
             </NativeBaseProvider>

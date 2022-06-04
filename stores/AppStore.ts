@@ -8,7 +8,6 @@ export class AppStore {
     }
 
     @observable loggedIn: boolean = false
-    @observable user: string = ""
     @observable loading: boolean = false
 
     @action
@@ -35,9 +34,6 @@ export class AppStore {
             return this.loggedIn = false
         })
     }
-
-    @action
-    addUser = (name:string) => this.user = name
 
     @action
     setLoading = (loading:boolean) => {

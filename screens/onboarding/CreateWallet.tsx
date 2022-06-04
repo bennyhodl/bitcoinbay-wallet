@@ -17,7 +17,7 @@ const CreateWallet = observer(() => {
     const [email, setEmail] = useState<string>("")
     const [name, setName] = useState<string>("")
     const {loading, setLoading} = stores.appStore
-    const {addUser, login} = stores.appStore
+    const {login} = stores.appStore
     const {storeWalletId, storeInvoiceKey, storeAdminKey, createWallet} = stores.lnbitsStore
 
     const newWallet = async () => {
@@ -27,7 +27,6 @@ const CreateWallet = observer(() => {
         storeWalletId(wallet.id)
         storeInvoiceKey(wallet.inkey)
         storeAdminKey(wallet.adminkey)
-        addUser(wallet.name)
         await login()
     }
 
