@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 const DrawerButton = () => {
     const navigation = useNavigation<any>();
     return(
-        <Box zIndex={999} position="absolute" top={12} left={5}>
+        <Box zIndex={999} position="absolute" top={5} left={5}>
             <Pressable onPress={() => navigation.openDrawer()}>
                 <FontAwesomeIcon icon={faBars} color="#ff581a" size={25}/>
             </Pressable>
