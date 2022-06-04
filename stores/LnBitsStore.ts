@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store"
 import {WalletDetails, CreateInvoice, Transaction, CreateWallet} from "../types/wallet"
 import axios from "axios"
 import { action, makeObservable, observable, runInAction } from "mobx"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default class LnBitsStore {
     constructor() {
@@ -14,6 +15,14 @@ export default class LnBitsStore {
     transactions: Transaction[] | undefined = undefined
     private lnbitsUrl = "https://legend.lnbits.com/api/v1"
     private userUrl = "https://legend.lnbits.com/usermanager/api/v1"
+
+    @action
+    reset = async () => {
+        await SecureStore.setItemAsync("walletId", "")
+        await SecureStore.setItemAsync("invoiceKey", "")
+        await SecureStore.setItemAsync("adminKey", "")
+        await AsyncStorage.setItem('loggedIn', 'false')
+    }
 
     @action
     storeWalletId = async (id:string) => {
