@@ -55,7 +55,7 @@ const Receive = (props: InvoiceProps) => {
         message: props.route.params.pay_req,
       });
     } catch (error) {
-      console.log('Error', error);
+      alert(`Error: ${error}`);
     }
   };
 

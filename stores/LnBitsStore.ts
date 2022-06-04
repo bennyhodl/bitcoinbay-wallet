@@ -69,7 +69,6 @@ export default class LnBitsStore {
     @action
     createWallet = async (name:string, email?:string) => {
         const invoiceKey = "150a396709934a9ea2d0f6ee8b11b3fa"
-        console.log("ENV", this.userUrl)
 
         const header = {
             "X-Api-Key": invoiceKey,

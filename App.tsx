@@ -5,7 +5,6 @@ import AppProvider from './AppProvider';
 import BayWalletNavigation from "./screens/BayWalletNavigation"
 
 const App = () => {
-  console.log(Constants.manifest?.extra?.lnbitsUrl)
   return (
     <AppProvider>
       <BayWalletNavigation />
