@@ -1,32 +1,45 @@
-import 'react-native-gesture-handler';
-import React, {useState} from 'react';
-import AppLoading from 'expo-app-loading'
-import stores from "./stores"
-import AppProvider from './AppProvider';
-import BayWalletNavigation from "./screens/BayWalletNavigation"
+import 'react-native-gesture-handler'
+import React, { useState, useEffect } from 'react'
+import stores from './stores'
+import AppProvider from './AppProvider'
+import BayWalletNavigation from './screens/BayWalletNavigation'
+import * as SplashScreen from 'expo-splash-screen'
+
+SplashScreen.preventAutoHideAsync()
 
 const App = () => {
   const [appReady, setAppReady] = useState<boolean>(false)
 
-  const {checkLoggedIn} = stores.appStore
+  const { checkLoggedIn } = stores.appStore
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        checkLoggedIn()
+      } catch (e) {
+        console.warn(e)
+      } finally {
+        // Tell the application to render
+        await SplashScreen.hideAsync()
+        setAppReady(true)
+      }
+    }
+
+    prepare()
+  }, [])
 
   if (!appReady) {
-    return (
-      <AppLoading
-        startAsync={checkLoggedIn}
-        onFinish={() => setAppReady(true)}
-        onError={console.warn}
-      />
-    )
+    return null
   }
+
   return (
     <AppProvider>
       <BayWalletNavigation />
     </AppProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
 
 // Color Switch Component
 // const ToggleDarkMode = () => {
